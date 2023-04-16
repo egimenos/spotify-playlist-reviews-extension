@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "spotify-scores",
+  "version": "1.0.0",
+  "description": "A Chrome extension to interact with Spotify and display additional album information",
+  "permissions": ["declarativeContent", "storage"],
+  "page_action": {
+    "default_icon": {
+      "128": "images/spotify.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {},
+  "icons": {
+    "128": "images/spotify.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
