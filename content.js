@@ -63,36 +63,22 @@ const fetchAlbumScore = async (albumName) => {
 const insertScore = (row, score, link) => {
   const scoreElement = document.createElement("a");
   scoreElement.href = link;
-  scoreElement.textContent = score || "N/A";
-  scoreElement.style.marginLeft = "8px";
-  const lastGridCell = row.querySelector(
-    '[role="gridcell"][aria-colindex="5"]'
+  scoreElement.textContent = score || "";
+
+  scoreElement.classList.add("score");
+  const firstGridCell = row.querySelector(
+    '[role="gridcell"][aria-colindex="1"]'
   );
 
-  const newGridCell = lastGridCell.cloneNode(true);
-
-  newGridCell.replaceChildren(scoreElement);
-
-  lastGridCell.parentNode.insertBefore(newGridCell, lastGridCell.nextSibling);
+  firstGridCell.replaceChildren(scoreElement);
 };
 
 const addScoreToHeader = () => {
   const columnHeaders = document.querySelectorAll('[role="columnheader"]');
 
-  const lastColumnHeader = columnHeaders[columnHeaders.length - 1];
+  const firstColumnHeader = columnHeaders[0];
 
-  const newColumnHeader = lastColumnHeader.cloneNode(true);
-  newColumnHeader.classList.add("score");
-
-  const ariaLabelDiv = newColumnHeader.querySelector("div[aria-label]");
-
-  ariaLabelDiv.setAttribute("aria-label", "score");
-  ariaLabelDiv.innerHTML = "Score";
-
-  lastColumnHeader.parentNode.insertBefore(
-    newColumnHeader,
-    lastColumnHeader.nextSibling
-  );
+  firstColumnHeader.replaceChildren("Score");
 };
 
 const getAlbumScoreFromStorage = (albumName) => {
