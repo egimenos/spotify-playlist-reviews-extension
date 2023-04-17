@@ -1,8 +1,8 @@
 # Chrome Extension for Spotify Pitchfork Reviews
 
-This Chrome extension enhances the Spotify web player experience by displaying Pitchfork review scores and links for albums directly on the track list. The extension is built using Chrome Manifest V3.
+This Chrome extension enhances the Spotify web player experience by displaying Pitchfork review scores and links to the reviews directly on the track list. The extension is built using Chrome Manifest V3.
 
-It is just a small a side-project that depends on this backend to be deployed: https://github.com/egimenos/albums-reviews
+This is just a small personal project intended for personal use and self-learning, which relies on this backend to be deployed: https://github.com/egimenos/albums-reviews
 
 ## Features
 
