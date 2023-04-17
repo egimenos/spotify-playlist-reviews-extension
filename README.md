@@ -45,6 +45,5 @@ If you want to contribute to this project, feel free to fork the repository, cre
 
 <a href="https://www.flaticon.com/free-icons/spotify" title="spotify icons">Spotify icons created by Freepik - Flaticon</a>
 
-```
+![image](https://user-images.githubusercontent.com/18742365/232550382-c8dbc64a-ed6c-467b-a5a7-a8c8471d68d6.png)
 
-```
