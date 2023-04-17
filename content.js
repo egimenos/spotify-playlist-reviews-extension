@@ -1,11 +1,13 @@
-import { FETCH_SCORE_URL } from "./config";
+const { FETCH_SCORE_URL } = window.spotifyScoresConfig;
 
 const initialProcess = () => {
   const tracklist = document.querySelector(
     '[data-testid="playlist-tracklist"]'
   );
+  console.log("###", tracklist);
 
   if (!tracklist) return;
+
   const rows = tracklist.querySelectorAll('[data-testid="tracklist-row"]');
 
   for (const row of rows) {
@@ -13,41 +15,36 @@ const initialProcess = () => {
   }
 };
 
-const addReviewScoreToTrack = async () => {
-  const rows = tracklist.querySelectorAll('[data-testid="tracklist-row"]');
+const addReviewScoreToTrack = async (row) => {
+  const albumLink = row.querySelector('a[href^="/album"]');
 
-  for (const row of rows) {
-    const tracklistRowLink = row.querySelector(
-      '[data-testid="internal-track-link"]'
-    );
-    const albumName = tracklistRowLink.textContent.trim();
+  const albumName = albumLink.textContent.trim();
 
-    const storedAlbum = await getAlbumScoreFromStorage(albumName);
+  const storedAlbum = await getAlbumScoreFromStorage(albumName);
 
-    if (storedAlbum) {
-      insertScore(row, result.score, result.link);
-    } else {
-      try {
-        const fetchedAlbum = await fetchAlbumScore(albumName);
+  if (storedAlbum) {
+    insertScore(row, result.score, result.link);
+  } else {
+    try {
+      const fetchedAlbum = await fetchAlbumScore(albumName);
 
-        if (fetchedAlbum) {
-          saveAlbumScoreToStorage(
-            albumName,
-            fetchedAlbum.score,
-            fetchedAlbum.link
-          );
-          insertScore(row, fetchedAlbum.score, fetchedAlbum.link);
-        }
-      } catch (error) {
-        console.error("Error fetching album score:", error);
+      if (fetchedAlbum) {
+        saveAlbumScoreToStorage(
+          albumName,
+          fetchedAlbum.score,
+          fetchedAlbum.link
+        );
+        insertScore(row, fetchedAlbum.score, fetchedAlbum.link);
       }
+    } catch (error) {
+      console.error("Error fetching album score:", error);
     }
   }
 };
 
 const fetchAlbumScore = async (albumName) => {
   const response = await fetch(
-    `${FETCH_SCORE_URL}/${encodeURIComponent(albumName)}`
+    `${FETCH_SCORE_URL}/albums/${encodeURIComponent(albumName)}`
   );
 
   if (response.ok) {
@@ -102,8 +99,10 @@ const observerCallback = async (mutations) => {
 const observer = new MutationObserver(observerCallback);
 
 const init = () => {
-  checkTracklist();
+  console.log("### Starting extension");
+  initialProcess();
   observer.observe(document.body, { childList: true, subtree: true });
 };
-
-init();
+window.onload = function () {
+  init();
+};
