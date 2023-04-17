@@ -107,11 +107,9 @@ const observerCallback = async (mutations) => {
   for (const mutation of mutations) {
     if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
       for (const node of mutation.addedNodes) {
-        if (
-          node.nodeType === Node.ELEMENT_NODE &&
-          node.matches('[data-testid="tracklist-row"]')
-        ) {
-          addReviewScoreToTrack(node);
+        const row = node.querySelector('[data-testid="tracklist-row"]');
+        if (row) {
+          addReviewScoreToTrack(row);
         }
       }
     }
@@ -121,7 +119,7 @@ const observerCallback = async (mutations) => {
 const observer = new MutationObserver(observerCallback);
 
 const init = () => {
-  console.log("### Starting extension");
+  console.log("### Starting spotify-reviews extension");
   initialProcess();
   observer.observe(document.body, { childList: true, subtree: true });
 };
