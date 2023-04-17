@@ -61,11 +61,17 @@ const fetchAlbumScore = async (albumName) => {
 };
 
 const insertScore = (row, score, link) => {
-  const scoreElement = document.createElement("a");
-  scoreElement.href = link;
-  scoreElement.textContent = score || "";
+  const scoreElement = document.createElement("div");
 
-  scoreElement.classList.add("score");
+  const linkElement = document.createElement("a");
+  linkElement.href = link;
+  linkElement.textContent = score || "";
+  scoreElement.appendChild(linkElement);
+
+  if (score) {
+    scoreElement.setAttribute("id", "score-wrapper");
+  }
+
   const firstGridCell = row.querySelector(
     '[role="gridcell"][aria-colindex="1"]'
   );

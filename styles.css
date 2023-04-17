@@ -8,6 +8,19 @@ div[role="gridcell"] {
   grid-column: auto;
 }
 
-.score {
-  color: green;
+#score-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #1ed760;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#score-wrapper > a {
+  color: black !important;
 }
