@@ -4,9 +4,10 @@ const initialProcess = () => {
   const tracklist = document.querySelector(
     '[data-testid="playlist-tracklist"]'
   );
-  console.log("###", tracklist);
 
   if (!tracklist) return;
+
+  addScoreToHeader();
 
   const rows = tracklist.querySelectorAll('[data-testid="tracklist-row"]');
 
@@ -23,7 +24,7 @@ const addReviewScoreToTrack = async (row) => {
   const storedAlbum = await getAlbumScoreFromStorage(albumName);
 
   if (storedAlbum) {
-    insertScore(row, result.score, result.link);
+    insertScore(row, storedAlbum.score, storedAlbum.link);
   } else {
     try {
       const fetchedAlbum = await fetchAlbumScore(albumName);
@@ -34,35 +35,64 @@ const addReviewScoreToTrack = async (row) => {
           fetchedAlbum.score,
           fetchedAlbum.link
         );
-        insertScore(row, fetchedAlbum.score, fetchedAlbum.link);
       }
+      insertScore(row, fetchedAlbum?.score, fetchedAlbum?.link);
     } catch (error) {
-      console.error("Error fetching album score:", error);
+      console.error("Error adding review score:", error);
     }
   }
 };
 
 const fetchAlbumScore = async (albumName) => {
-  const response = await fetch(
-    `${FETCH_SCORE_URL}/albums/${encodeURIComponent(albumName)}`
-  );
+  try {
+    const response = await fetch(
+      `${FETCH_SCORE_URL}/albums/${encodeURIComponent(albumName)}`
+    );
 
-  if (response.ok) {
-    const { score, link } = await response.json();
-    return { score, link };
+    if (response.ok) {
+      const { score, link } = await response.json();
+      return { score, link };
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error fetching album score", error);
   }
-
-  return null;
 };
 
 const insertScore = (row, score, link) => {
   const scoreElement = document.createElement("a");
   scoreElement.href = link;
-  scoreElement.textContent = `Score: ${score}`;
+  scoreElement.textContent = score || "N/A";
   scoreElement.style.marginLeft = "8px";
-  row
-    .querySelector('[role="gridcell"][aria-colindex="5"]')
-    .appendChild(scoreElement);
+  const lastGridCell = row.querySelector(
+    '[role="gridcell"][aria-colindex="5"]'
+  );
+
+  const newGridCell = lastGridCell.cloneNode(true);
+
+  newGridCell.replaceChildren(scoreElement);
+
+  lastGridCell.parentNode.insertBefore(newGridCell, lastGridCell.nextSibling);
+};
+
+const addScoreToHeader = () => {
+  const columnHeaders = document.querySelectorAll('[role="columnheader"]');
+
+  const lastColumnHeader = columnHeaders[columnHeaders.length - 1];
+
+  const newColumnHeader = lastColumnHeader.cloneNode(true);
+  newColumnHeader.classList.add("score");
+
+  const ariaLabelDiv = newColumnHeader.querySelector("div[aria-label]");
+
+  ariaLabelDiv.setAttribute("aria-label", "score");
+  ariaLabelDiv.innerHTML = "Score";
+
+  lastColumnHeader.parentNode.insertBefore(
+    newColumnHeader,
+    lastColumnHeader.nextSibling
+  );
 };
 
 const getAlbumScoreFromStorage = (albumName) => {

@@ -1,0 +1,9 @@
+div[role="columnheader"] {
+  grid-row: 1;
+  grid-column: auto;
+}
+
+div[role="gridcell"] {
+  grid-row: 1;
+  grid-column: auto;
+}
