@@ -2,7 +2,7 @@
 
 This Chrome extension enhances the Spotify web player experience by displaying albums scores and links to the reviews (currently only from https://pitchfork.com/) directly on the track list. The extension is built using Chrome Manifest V3.
 
-This is just a small personal project intended for personal use and self-learning, which relies on this backend to be deployed: https://github.com/egimenos/albums-reviews
+This is just a small personal project intended for personal use and self-learning, which relies on this backend to be deployed and working: https://github.com/egimenos/albums-reviews
 
 ## Features
 
@@ -45,5 +45,6 @@ If you want to contribute to this project, feel free to fork the repository, cre
 
 <a href="https://www.flaticon.com/free-icons/spotify" title="spotify icons">Spotify icons created by Freepik - Flaticon</a>
 
-![image](https://user-images.githubusercontent.com/18742365/232550382-c8dbc64a-ed6c-467b-a5a7-a8c8471d68d6.png)
+```
 
+```
