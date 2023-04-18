@@ -1,4 +1,5 @@
 const { FETCH_SCORE_URL } = window.spotifyScoresConfig;
+const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 10000; // 10 days cache expiration
 
 const initialProcess = () => {
   const tracklist = document.querySelector(
@@ -85,21 +86,29 @@ const addScoreToHeader = () => {
 
   firstColumnHeader.replaceChildren("Score");
 };
-
 const getAlbumScoreFromStorage = (albumName) => {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get([albumName], (result) => {
       if (chrome.runtime.lastError) {
         reject(chrome.runtime.lastError);
       } else {
-        resolve(result[albumName]);
+        const storedAlbum = result[albumName];
+        if (
+          storedAlbum &&
+          Date.now() - storedAlbum.timestamp < CACHE_EXPIRATION_TIME
+        ) {
+          resolve(storedAlbum);
+        } else {
+          resolve(null);
+        }
       }
     });
   });
 };
 
 const saveAlbumScoreToStorage = (albumName, score, link) => {
-  chrome.storage.local.set({ [albumName]: { score, link } });
+  const timestamp = Date.now();
+  chrome.storage.local.set({ [albumName]: { score, link, timestamp } });
 };
 
 const observerCallback = async (mutations) => {
