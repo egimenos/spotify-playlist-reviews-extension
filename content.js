@@ -65,6 +65,7 @@ const insertScore = (row, score, link) => {
 
   const linkElement = document.createElement("a");
   linkElement.href = link;
+  linkElement.target = "_blank";
   linkElement.textContent = score || "";
   scoreElement.appendChild(linkElement);
 
@@ -111,6 +112,16 @@ const saveAlbumScoreToStorage = (albumName, score, link) => {
   chrome.storage.local.set({ [albumName]: { score, link, timestamp } });
 };
 
+const clearStorage = () => {
+  chrome.storage.local.clear((_result) => {
+    if (chrome.runtime.lastError) {
+      console.error("Error clearing storage:", chrome.runtime.lastError);
+    } else {
+      console.log("Storage cleared successfully");
+    }
+  });
+};
+
 const observerCallback = async (mutations) => {
   for (const mutation of mutations) {
     if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
@@ -128,6 +139,7 @@ const observer = new MutationObserver(observerCallback);
 
 const init = () => {
   console.log("### Starting spotify-reviews extension");
+  chrome.storage.local.clear();
   initialProcess();
   observer.observe(document.body, { childList: true, subtree: true });
 };
