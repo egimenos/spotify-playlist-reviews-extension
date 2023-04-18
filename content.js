@@ -29,13 +29,12 @@ const addReviewScoreToTrack = async (row) => {
     try {
       const fetchedAlbum = await fetchAlbumScore(albumName);
 
-      if (fetchedAlbum) {
-        saveAlbumScoreToStorage(
-          albumName,
-          fetchedAlbum.score,
-          fetchedAlbum.link
-        );
-      }
+      saveAlbumScoreToStorage(
+        albumName,
+        fetchedAlbum?.score || null,
+        fetchedAlbum?.link || null
+      );
+
       insertScore(row, fetchedAlbum?.score, fetchedAlbum?.link);
     } catch (error) {
       console.error("Error adding review score:", error);
