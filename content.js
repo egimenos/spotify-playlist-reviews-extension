@@ -139,7 +139,6 @@ const observer = new MutationObserver(observerCallback);
 
 const init = () => {
   console.log("### Starting spotify-reviews extension");
-  chrome.storage.local.clear();
   initialProcess();
   observer.observe(document.body, { childList: true, subtree: true });
 };
