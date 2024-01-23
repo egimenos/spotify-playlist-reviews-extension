@@ -14,18 +14,20 @@ This is just a small personal project intended for personal use and self-learnin
 ## Installation
 
 1. Clone this repository or download the source code as a ZIP file and extract it.
-2. Open the Chrome browser and navigate to `chrome://extensions/`.
-3. Add the endpoint url to `config.js`
+2. Create a file `config.js` in the root and add your backend url to this IIFE:
 
 ```js
-  window.spotifyScoresConfig = {
-    FETCH_SCORE_URL: "https://your-backend.dev",
-  };
+(function() {
+    window.spotifyScoresConfig = {
+        FETCH_SCORE_URL: "https://your-backend-url",
+    };
 })();
-```
 
-4. Turn on "Developer mode" by toggling the switch in the upper right corner.
-5. Click the "Load unpacked" button and select the folder containing the source code of the extension.
+```
+3. Remove the "template" part from the manifest.json file and add again your backend url to the host_permissions array.
+4. Open the Chrome browser and navigate to `chrome://extensions/`.
+5. Turn on "Developer mode" by toggling the switch in the upper right corner.
+6. Click the "Load unpacked" button and select the folder containing the source code of the extension.
 
 The extension should now be installed and active in your Chrome browser.
 
